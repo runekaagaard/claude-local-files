@@ -117,4 +117,4 @@ Pull requests welcome! Areas for improvement:
 
 ## License
 
-MIT
+Mozilla Public License
