@@ -1,8 +1,10 @@
+{
+    admin off
+}
+
 cdn.jsdelivr.net {
     tls cdn.jsdelivr.net.pem cdn.jsdelivr.net-key.pem
-
     log
-
     route {
         handle /pyodide/claude-local-files/* {
             uri strip_prefix /pyodide/claude-local-files
@@ -13,7 +15,6 @@ cdn.jsdelivr.net {
             header Access-Control-Allow-Methods GET, OPTIONS
             header Access-Control-Allow-Headers *
         }
-
         handle /* {
             reverse_proxy https://fastly.jsdelivr.net {
                 header_up Host {upstream_hostport}
