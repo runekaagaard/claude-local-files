@@ -1,6 +1,6 @@
 # Claude Local Files
 
-Serve local files to Claude via HTTPS. Uses a clever hack that passes the Claude desktop Electron app's Content Security Policy by intercepting requests to cdn.jsdelivr.net.
+Serve local files to Claude Desktop via HTTPS for use in code artifacts. Uses a clever hack that passes the Claude desktop Electron app's Content Security Policy by intercepting requests to cdn.jsdelivr.net.
 
 ## How it works
 
@@ -27,16 +27,6 @@ sudo apt install mkcert caddy
 brew install mkcert caddy
 ```
 
-## Project Structure
-```
-claude-local-files/
-├── Caddyfile
-├── claude-local-files.sh
-├── files/
-│   └── test.json
-└── README.md
-```
-
 ## Usage
 
 1. Clone and enter the repository:
@@ -45,37 +35,14 @@ git clone https://github.com/runekaagaard/claude-local-files.git
 cd claude-local-files
 ```
 
-2. Add your files to the `files/` directory
-
-3. Start the server:
+2. Start the server:
 ```bash
 ./claude-local-files.sh
 ```
 
-4. Access files in Claude desktop app artifacts using URL pattern:
-```javascript
-fetch('https://cdn.jsdelivr.net/pyodide/claude-local-files/your-file.json')
-```
+3. Add your files to the `files/` directory
 
-Example React artifact:
-```javascript
-import React, { useState, useEffect } from 'react';
-
-const LocalJsonViewer = () => {
-  const [data, setData] = useState(null);
-  
-  useEffect(() => {
-    fetch('https://cdn.jsdelivr.net/pyodide/claude-local-files/test.json')
-      .then(response => response.json())
-      .then(setData)
-      .catch(console.error);
-  }, []);
-
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
-};
-
-export default LocalJsonViewer;
-```
+4. Ask Claude Desktop to use the content of the file in a code artifact, e.g. https://cdn.jsdelivr.net/pyodide/claude-local-files/test.json
 
 ## Testing
 
@@ -103,17 +70,15 @@ Example:
 
 - Only runs locally - the cdn.jsdelivr.net interception is only on your machine
 - Uses proper HTTPS with valid certificates via mkcert
-- Maintains Claude's security model by working within its CSP restrictions
 - Scripts cleans up /etc/hosts modifications on exit
-- Certificates are stored in the workspace directory
+- Certificates are stored in the git root directory
 
 ## Development
 
 Pull requests welcome! Areas for improvement:
+
 - Windows support
 - Better logging options
-- File watching/auto reload
-- Configuration options
 
 ## License
 
