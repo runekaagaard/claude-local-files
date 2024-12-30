@@ -1,14 +1,16 @@
 # Claude Local Files
 
-Serve local files to Claude Desktop via HTTPS for use in code artifacts. Uses a clever hack that passes the Claude desktop Electron app's Content Security Policy by intercepting requests to cdn.jsdelivr.net.
+Artifacts in Claude Desktop can only access cdn.jsdelivr.net/pyodide/* due to Content Security Policy restrictions. This app bypasses that restriction and allows Claude Desktop artifact and analysis tools to fetch local files and use them for calculations, UI's, etc.
+
+I use it with [mcp-alchemy](https://github.com/runekaagaard/mcp-alchemy/) to have Claude Desktop generate UI reports for database result sets that are way too large for an LLM to read.
 
 ## How it works
 
-1. Intercepts cdn.jsdelivr.net locally using /etc/hosts
-2. Serves local files under /pyodide/* to match Claude's CSP whitelist
-3. Proxies all other requests to the real CDN via Fastly
-4. Uses mkcert for valid HTTPS certificates
-5. Adds CORS headers for claudeusercontent.com
+1. Adds a line in /etc/hosts that points cdn.jsdelivr.net to 127.0.0.1
+2. Uses mkcert to generate a valid local SSL certificate for cdn.jsdelivr.net
+3. Starts a caddy server that proxies all other requests than to a specfic url folder to Fastly
+4. Files in the `./files` directory are served at `https://cdn.jsdelivr.net/pyodide/claude-local-files/[FILENAME]`
+4. Removes the line in /etc/hosts on exit
 
 ## Installation
 
@@ -63,8 +65,8 @@ To serve a file:
 2. Access it at `https://cdn.jsdelivr.net/pyodide/claude-local-files/[FILENAME]`
 
 Example:
-- File: `files/data.json`
-- URL: `https://cdn.jsdelivr.net/pyodide/claude-local-files/data.json`
+- File: `files/test.json`
+- URL: `https://cdn.jsdelivr.net/pyodide/claude-local-files/test.json`
 
 ## Security Notes
 
@@ -82,4 +84,4 @@ Pull requests welcome! Areas for improvement:
 
 ## License
 
-Mozilla Public License
+Mozilla Public License 2.0
