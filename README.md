@@ -29,6 +29,18 @@ sudo apt install mkcert caddy
 brew install mkcert caddy
 ```
 
+
+### Windows
+Run in an elevated powershell (as administrator):
+```powershell
+# Install dependencies
+winget install CaddyServer.Caddy
+winget install FiloSottile.mkcert
+
+# Run the script
+./claude-local-files.ps1
+``` 
+
 ## Usage
 
 1. Clone and enter the repository:
